@@ -12,7 +12,7 @@ joke_api = Blueprint('joke_api', __name__,
 api = Api(joke_api)
 
 class JokesAPI:
-    # not implemented
+    # not implemented 
     class _Create(Resource):
         def post(self, joke):
             pass
@@ -43,6 +43,7 @@ class JokesAPI:
     class _UpdateLike(Resource):
         def put(self, id):
             addJokeHaHa(id)
+            
             return jsonify(getJoke(id))
 
     # put method: addJokeBooHoo

@@ -154,4 +154,4 @@ def initPlayers():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate email, or error: {player.uid}")
+                print(f"Records do exist, duplicate email, or error: {player.uid}")

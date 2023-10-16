@@ -24,7 +24,7 @@ def updateTime():
     if last_run is None:
         last_run = time.time()
         return True
-    
+    #
     # calculate time since last update
     elapsed = time.time() - last_run
     if elapsed > 86400:  # update every 24 hours

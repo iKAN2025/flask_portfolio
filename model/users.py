@@ -227,8 +227,7 @@ class User(db.Model):
             "name": self.name,
             "uid": self.uid,
             "dob": self.dob,
-            "age": self.age,
-            "posts": [post.read() for post in self.posts]
+            "age": self.age
         }
 
     # CRUD update: updates user name, password, phone

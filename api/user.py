@@ -29,6 +29,9 @@ class UserAPI:
             # look for password and dob
             password = body.get('password')
             dob = body.get('dob')
+            
+            tracking = body.get('tracking')
+            
 
             ''' #1: Key code block, setup USER OBJECT '''
             uo = User(name=name, 
@@ -44,6 +47,8 @@ class UserAPI:
                     uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
                 except:
                     return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
+            if tracking is not None:
+                uo.tracking = tracking
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
@@ -58,7 +63,24 @@ class UserAPI:
             users = User.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-    
+        
+        def update(self):
+            body = request.get_json()
+            user_id = body.get('id')
+            if user_id is None:
+                return {'message': 'Id not found.'}, 400
+            user = User.query.get(id = user_id)
+            if body.get('tracking'):
+                user.update(tracking = body.get('tracking'))
+                return jsonify(user.read())
+            return {'message': 'You may only update tracking.'}, 400
+            
+    # make api layer
+    # 
+            
+
+        
+        
     class _Security(Resource):
 
         def post(self):

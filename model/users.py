@@ -18,103 +18,103 @@ from werkzeug.security import generate_password_hash, check_password_hash
 #     # Define the Notes schema
 #     id = db.Column(db.Integer, primary_key=True)
 #     note = db.Column(db.Text, unique=False, nullable=False)
-#     image = db.Column(db.String, unique=False)
-#     # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
-#     userID = db.Column(db.Integer, db.ForeignKey('users.id'))
+# #     image = db.Column(db.String, unique=False)
+# #     # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
+# #     userID = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-#     # Constructor of a Notes object, initializes of instance variables within object
-#     def __init__(self, id, note, image):
-#         self.userID = id
-#         self.note = note
-#         self.image = image
+# #     # Constructor of a Notes object, initializes of instance variables within object
+# #     def __init__(self, id, note, image):
+# #         self.userID = id
+# #         self.note = note
+# #         self.image = image
 
-#     # Returns a string representation of the Notes object, similar to java toString()
-#     # returns string
+# #     # Returns a string representation of the Notes object, similar to java toString()
+# #     # returns string
+# #     def __repr__(self):
+# #         return "Notes(" + str(self.id) + "," + self.note + "," + str(self.userID) + ")"
+
+# #     # CRUD create, adds a new record to the Notes table
+# #     # returns the object added or None in case of an error
+# #     def create(self):
+# #         try:
+# #             # creates a Notes object from Notes(db.Model) class, passes initializers
+# #             db.session.add(self)  # add prepares to persist person object to Notes table
+# #             db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
+# #             return self
+# #         except IntegrityError:
+# #             db.session.remove()
+# #             return None
+
+# #     # CRUD read, returns dictionary representation of Notes object
+# #     # returns dictionary
+# #     def read(self):
+# #         # encode image
+# #         path = app.config['UPLOAD_FOLDER']
+# #         file = os.path.join(path, self.image)
+# #         file_text = open(file, 'rb')
+# #         file_read = file_text.read()
+# #         file_encode = base64.encodebytes(file_read)
+        
+# #         return {
+# #             "id": self.id,
+# #             "userID": self.userID,
+# #             "note": self.note,
+# #             "image": self.image,
+# #             "base64": str(file_encode)
+# #         }
+
+
+# # Define the User class to manage actions in the 'users' table
+# # -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
+# # -- a.) db.Model is like an inner layer of the onion in ORM
+# # -- b.) User represents data we want to store, something that is built on db.Model
+# # -- c.) SQLAlchemy ORM is layer on top of SQLAlchemy Core, then SQLAlchemy engine, SQL
+
+# class Tracker(db.Model):
+#     """Specification for Instrument table """
+#     __tablename__ = 'trackers' #class name singular, table name plural
+#     # Define the Notes schema
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.String, db.ForeignKey('users.id'))
+#     instrument = db.Column(db.String)
+#     date = db.Column(db.String)
+#     play_minutes = db.Column(db.Integer)
+    
+#     #object oriented programming. defines init (constructor).
+#     def __init__(self, id, user_id, date, play_minutes):
+#             self.id = id
+#             self.user_id = user_id
+#             self.date = date
+#             self.play_minutes = play_minutes
+  
 #     def __repr__(self):
-#         return "Notes(" + str(self.id) + "," + self.note + "," + str(self.userID) + ")"
-
-#     # CRUD create, adds a new record to the Notes table
-#     # returns the object added or None in case of an error
+#             return "Tracker(" + str(self.id) + "," + self.instrument+ "," + str(self.date) + str(self.play_minutes) + ")"
+    
 #     def create(self):
-#         try:
-#             # creates a Notes object from Notes(db.Model) class, passes initializers
-#             db.session.add(self)  # add prepares to persist person object to Notes table
+#         try: #try and except to prevent errors
+#             # creates a Instrument object from Instrument (db.Model) class, passes initializers
+#             db.session.add(self)  # add prepares to persist person object to Instrument table
 #             db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
 #             return self
 #         except IntegrityError:
 #             db.session.remove()
 #             return None
 
-#     # CRUD read, returns dictionary representation of Notes object
-#     # returns dictionary
 #     def read(self):
-#         # encode image
 #         path = app.config['UPLOAD_FOLDER']
-#         file = os.path.join(path, self.image)
+#         file = os.path.join(path, self.instrument)
 #         file_text = open(file, 'rb')
 #         file_read = file_text.read()
 #         file_encode = base64.encodebytes(file_read)
         
 #         return {
 #             "id": self.id,
-#             "userID": self.userID,
-#             "note": self.note,
-#             "image": self.image,
+#             "user_id": self.user_id, 
+#             "date": self.date,
+#             "play_minutes": self.play_minutes,
+#             "instrument": self.instrument,
 #             "base64": str(file_encode)
 #         }
-
-
-# Define the User class to manage actions in the 'users' table
-# -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
-# -- a.) db.Model is like an inner layer of the onion in ORM
-# -- b.) User represents data we want to store, something that is built on db.Model
-# -- c.) SQLAlchemy ORM is layer on top of SQLAlchemy Core, then SQLAlchemy engine, SQL
-
-class Tracker(db.Model):
-    """Specification for Instrument table """
-    __tablename__ = 'trackers' #class name singular, table name plural
-    # Define the Notes schema
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String, db.ForeignKey('users.id'))
-    instrument = db.Column(db.String)
-    date = db.Column(db.String)
-    play_minutes = db.Column(db.Integer)
-    
-    #object oriented programming. defines init (constructor).
-    def __init__(self, id, user_id, date, play_minutes):
-            self.id = id
-            self.user_id = user_id
-            self.date = date
-            self.play_minutes = play_minutes
-  
-    def __repr__(self):
-            return "Tracker(" + str(self.id) + "," + self.instrument+ "," + str(self.date) + str(self.play_minutes) + ")"
-    
-    def create(self):
-        try: #try and except to prevent errors
-            # creates a Instrument object from Instrument (db.Model) class, passes initializers
-            db.session.add(self)  # add prepares to persist person object to Instrument table
-            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
-            return self
-        except IntegrityError:
-            db.session.remove()
-            return None
-
-    def read(self):
-        path = app.config['UPLOAD_FOLDER']
-        file = os.path.join(path, self.instrument)
-        file_text = open(file, 'rb')
-        file_read = file_text.read()
-        file_encode = base64.encodebytes(file_read)
-        
-        return {
-            "id": self.id,
-            "user_id": self.user_id, 
-            "date": self.date,
-            "play_minutes": self.play_minutes,
-            "instrument": self.instrument,
-            "base64": str(file_encode)
-        }
 
 
 
@@ -136,16 +136,22 @@ class User(db.Model):
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
     _dob = db.Column(db.Date)
+    _tracking = db.Column(db.CLOB)
 
+#If When I change the schema (aka add a field)….  I delete the .db file as it will generate when it does not exist.
+#Do not have a underscore in a website name 
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
-    trackers = db.relationship("Tracker", cascade='all, delete', backref='users', lazy=True)
+   # trackers = db.relationship("Tracker", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, password="123qwerty", dob=date.today()):
+    def __init__(self, name, uid, tracking, password="123qwerty", dob=date.today() ):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
+        self.tracking = tracking
         self.set_password(password)
         self._dob = dob
+        self._tracking = tracking
+        
 
     # a name getter method, extracts name from object
     @property
@@ -198,6 +204,15 @@ class User(db.Model):
         self._dob = dob
     
     @property
+    def tracking(self):
+        return self._tracking
+    
+    @tracking.setter
+    def tracking(self, tracking):
+        self._tracking = tracking
+        
+    
+    @property
     def age(self):
         today = date.today()
         return today.year - self._dob.year - ((today.month, today.day) < (self._dob.month, self._dob.day))
@@ -232,7 +247,7 @@ class User(db.Model):
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password=""):
+    def update(self, name="", uid="", password="", tracking=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -240,8 +255,11 @@ class User(db.Model):
             self.uid = uid
         if len(password) > 0:
             self.set_password(password)
+        if len(tracking) > 0:
+            self.tracking = tracking
         db.session.commit()
         return self
+    
 
     # CRUD delete: remove self
     # None
@@ -260,10 +278,10 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11))
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10))
-        u3 = User(name='Alexander Graham Bell', uid='lex')
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9))
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName"="Nicholas Tesla",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
 
         users = [u1, u2, u3, u4]
 

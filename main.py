@@ -49,10 +49,16 @@ def activate_job():  # activate these items
     initJokes()
     initUsers()
     initPlayers()
+    
 
-# this runs the application on the development server
-if __name__ == "__main__":
-    # change name for testing
+
+
+
+if __name__ == '__main__':
     from flask_cors import CORS
     cors = CORS(app)
-    app.run(debug=True, host="0.0.0.0", port="8240")
+    app.run(debug=True,  host="0.0.0.0", port="8240")
+
+
+
+

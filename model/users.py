@@ -136,7 +136,7 @@ class User(db.Model):
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
     _dob = db.Column(db.Date)
-    _tracking = db.Column(db.CLOB)
+    _tracking = db.Column(db.JSON)
 
 #If When I change the schema (aka add a field)….  I delete the .db file as it will generate when it does not exist.
 #Do not have a underscore in a website name 
@@ -279,11 +279,11 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName"="Nicholas Tesla",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName"="Eun Lim",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }') #testing create method
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName"="Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName"="Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }') #testing create method
         users = [u1, u2, u3, u4, u5]
 
         """Builds sample user/note(s) data"""

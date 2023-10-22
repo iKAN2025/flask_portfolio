@@ -55,15 +55,16 @@ class UserAPI:
             user = uo.create()
             # success returns json of user
             if user:
-                return jsonify(user.read())
+                #return jsonify(user.read())
+                return user.read()
             # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
 
         def get(self): # Read Method
             users = User.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
-            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-        
+            #return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps 
+            return (json_ready)  
         def update(self):
             body = request.get_json()
             user_id = body.get('id')
@@ -72,7 +73,8 @@ class UserAPI:
             user = User.query.get(id = user_id)
             if body.get('tracking'):
                 user.update(tracking = body.get('tracking')) 
-                return jsonify(user.read())
+                #return jsonify(user.read())
+                return user.read()
             return {'message': 'You may only update tracking.'}, 400
             
     # make api layer
@@ -100,6 +102,7 @@ class UserAPI:
             
             ''' authenticated user '''
             return jsonify(user.read())
+
 
             
 

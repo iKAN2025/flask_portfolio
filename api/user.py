@@ -30,7 +30,7 @@ class UserAPI:
             password = body.get('password')
             dob = body.get('dob')
             
-            tracking = body.get('tracking')
+            tracking = body.get('tracking') #validate tracking
             
 
             ''' #1: Key code block, setup USER OBJECT '''
@@ -71,7 +71,7 @@ class UserAPI:
                 return {'message': 'Id not found.'}, 400
             user = User.query.get(id = user_id)
             if body.get('tracking'):
-                user.update(tracking = body.get('tracking'))
+                user.update(tracking = body.get('tracking')) 
                 return jsonify(user.read())
             return {'message': 'You may only update tracking.'}, 400
             

@@ -242,7 +242,8 @@ class User(db.Model):
             "name": self.name,
             "uid": self.uid,
             "dob": self.dob,
-            "age": self.age
+            "age": self.age,
+            "tracking": self.tracking
         }
 
     # CRUD update: updates user name, password, phone
@@ -282,8 +283,8 @@ def initUsers():
         u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName"="Nicholas Tesla",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
         u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
         u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName"="Thomas Edison",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-
-        users = [u1, u2, u3, u4]
+        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName"="Eun Lim",  "instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }') #testing create method
+        users = [u1, u2, u3, u4, u5]
 
         """Builds sample user/note(s) data"""
         for user in users:

@@ -34,7 +34,7 @@ class UserAPI:
             #
 
             ''' #1: Key code block, setup USER OBJECT '''
-            uo = User(name=name, 
+            uo = User(name=name, #user name
                       uid=uid)
             
             ''' Additional garbage error checking '''

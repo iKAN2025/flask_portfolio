@@ -279,7 +279,7 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
         u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName"="Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
         u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
         u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName"="Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')

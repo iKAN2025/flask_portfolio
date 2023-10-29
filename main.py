@@ -50,10 +50,6 @@ def activate_job():  # activate these items
     initUsers()
     initPlayers()
     
-
-
-
-
 if __name__ == '__main__':
     from flask_cors import CORS
     cors = CORS(app)

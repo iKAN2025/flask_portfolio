@@ -35,18 +35,18 @@ class UserAPI:
 
             ''' #1: Key code block, setup USER OBJECT '''
             uo = User(name=name, #user name
-                      uid=uid)
+                      uid=uid, tracking=tracking)
             
             ''' Additional garbage error checking '''
             # set password if provided
             if password is not None:
                 uo.set_password(password)
             # convert to date type
-            if dob is not None:
-                try:
-                    uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
-                except:
-                    return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
+            # if dob is not None:
+            #     try:
+            #         uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
+            #     except:
+            #         return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
             if tracking is not None:
                 uo.tracking = tracking
             

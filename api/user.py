@@ -12,7 +12,7 @@ user_api = Blueprint('user_api', __name__,
 api = Api(user_api)
 
 class UserAPI:        
-    class _CRUD(Resource):  # User API operation for Create, Read.  THe Update, Delete methods need to be implemeented
+    class _CRUD(Resource):  # User API operation for Create, Read.  THe Update, Delete methods need to be implemented
         def post(self): # Create method
             ''' Read data for json body '''
             body = request.get_json()
@@ -64,21 +64,39 @@ class UserAPI:
             users = User.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             #return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps 
-            return (json_ready)  
-        def update(self):
+            return (json_ready) 
+    class _UD(Resource):        
+        def put(self, user_id):
             body = request.get_json()
             user_id = body.get('id')
             if user_id is None:
                 return {'message': 'Id not found.'}, 400
-            user = User.query.get(id = user_id)
-            if body.get('tracking'):
-                user.update(tracking = body.get('tracking')) 
-                #return jsonify(user.read())
-                return user.read()
-            return {'message': 'You may only update tracking.'}, 400
+            user = User.query.filter_by(id=user_id).first()  # Use filter_by to query by UID
+            if user:
+                if 'tracking' in body:
+                    user.tracking = body['tracking']
+                    user.update()  # Update user in the database
+                    return user.read()
+                return {'message': 'You may only update tracking.'}, 400
+            return {'message': 'User not found.'}, 404
+        def get(self, user_id):
+            user = User.query.filter_by(id=user_id).first()
+            if user:
+                return user.read()  # Assuming you have a 'read' method in your User model
+            return {'message': 'User not found.'}, 404
             
-    # make api layer
-    # 
+            # body = request.get_json()
+            # user_id = body.get('uid')
+            # if user_id is None:
+            #     return {'message': 'Id not found.'}, 400
+            # user = User.query.get(id = user_id)
+            # if body.get('tracking'):
+            #     user.update(tracking = body.get('tracking')) 
+            #     #return jsonify(user.read())
+            #     return user.read()
+            # return {'message': 'You may only update tracking.'}, 400
+            
+   
             
 
         
@@ -108,5 +126,6 @@ class UserAPI:
 
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
+    api.add_resource(_UD, '/<int:user_id>')
     api.add_resource(_Security, '/authenticate')
     

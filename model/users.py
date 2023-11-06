@@ -257,7 +257,7 @@ class User(db.Model):
         if len(password) > 0:
             self.set_password(password)
         if len(tracking) > 0:
-            self.tracking = tracking
+            self.tracking = tracking #
         db.session.commit()
         return self
     

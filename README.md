@@ -22,7 +22,7 @@ instances: This directory is the standard location for storing data files that y
 
 static: This directory is the standard location for files that you want to be cached by the web server. It is typically used for image files (JPEG, PNG, etc.) or JavaScript files that remain constant during the execution of the web server.
 
-api: This directory contains code that receives and responds to requests from external servers. It serves as the interface between the external world and the logic and code in the rest of the project. This folder has been updated to handle user data in the backend
+api: This directory contains code that receives and responds to requests from external servers. It serves as the interface between the external world and the logic and code in the rest of the project. This folder has been updated to handle user data in the backend! Check out /api/users! I also added a new resource!
 
 model: This directory contains files that implement the backend functionality for many of the files in the api directory. For example, there may be files in the model directory that directly interact with the database. This data has the tracking data!
 

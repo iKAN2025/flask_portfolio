@@ -1,7 +1,7 @@
 import threading
 
 # import "packages" from flask
-from flask import render_template  # import render_template from "public" flask libraries
+from flask import render_template, jsonify # import render_template from "public" flask libraries
 
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
@@ -43,6 +43,14 @@ def index():
 @app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
+
+@app.route('/api/users/create', methods=['OPTIONS'])
+def handle_preflight():
+    response = jsonify({'message': 'Preflight request received'})
+    response.headers.add('Access-Control-Allow-Origin', 'https://jplip.github.io')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers.add('Access-Control-Allow-Methods', 'POST')
+    return response, 200
 
 @app.before_first_request
 def activate_job():  # activate these items 

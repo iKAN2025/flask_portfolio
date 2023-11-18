@@ -8,79 +8,6 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
-''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
-
-# # Define the Post class to manage actions in 'posts' table,  with a relationship to 'users' table
-# class Post(db.Model):
-#     __tablename__ = 'posts'
-
-#     # Define the Notes schema
-#     id = db.Column(db.Integer, primary_key=True)
-#     note = db.Column(db.Text, unique=False, nullable=False)
-# #     image = db.Column(db.String, unique=False)
-# #     # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
-# #     userID = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-# #     # Constructor of a Notes object, initializes of instance variables within object
-# #     def __init__(self, id, note, image):
-# #         self.userID = id
-# #         self.note = note
-# #         self.image = image
-
-# #     # Returns a string representation of the Notes object, similar to java toString()
-# #     # returns string
-# #     def __repr__(self):
-# #         return "Notes(" + str(self.id) + "," + self.note + "," + str(self.userID) + ")"
-
-# #     # CRUD create, adds a new record to the Notes table
-# #     # returns the object added or None in case of an error
-# #     def create(self):
-# #         try:
-# #             # creates a Notes object from Notes(db.Model) class, passes initializers
-# #             db.session.add(self)  # add prepares to persist person object to Notes table
-# #             db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
-# #             return self
-# #         except IntegrityError:
-# #             db.session.remove()
-# #             return None
-
-# #     # CRUD read, returns dictionary representation of Notes object
-# #     # returns dictionary
-# #     def read(self):
-# #         # encode image
-# #         path = app.config['UPLOAD_FOLDER']
-# #         file = os.path.join(path, self.image)
-# #         file_text = open(file, 'rb')
-# #         file_read = file_text.read()
-# #         file_encode = base64.encodebytes(file_read)
-        
-# #         return {
-# #             "id": self.id,
-# #             "userID": self.userID,
-# #             "note": self.note,
-# #             "image": self.image,
-# #             "base64": str(file_encode)
-# #         }
-
-
-# # Define the User class to manage actions in the 'users' table
-# # -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
-# # -- a.) db.Model is like an inner layer of the onion in ORM
-# # -- b.) User represents data we want to store, something that is built on db.Model
-# # -- c.) SQLAlchemy ORM is layer on top of SQLAlchemy Core, then SQLAlchemy engine, SQL
-
-# class Tracker(db.Model):
-#     """Specification for Instrument table """
-#     __tablename__ = 'trackers' #class name singular, table name plural
-#     # Define the Notes schema
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.String, db.ForeignKey('users.id'))
-#     instrument = db.Column(db.String)
-#     date = db.Column(db.String)
-#     play_minutes = db.Column(db.Integer)
-    
-#     #object oriented programming. defines init (constructor).
 #     def __init__(self, id, user_id, date, play_minutes):
 #             self.id = id
 #             self.user_id = user_id
@@ -136,7 +63,8 @@ class User(db.Model):
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
     _dob = db.Column(db.Date)
-    _tracking = db.Column(db.JSON)
+    _tracking = db.Column(db.JSON, nullable= True)
+    _exercise = db.Column(db.JSON, nullable= True)
 
 #If When I change the schema (aka add a field)….  I delete the .db file as it will generate when it does not exist.
 #Do not have a underscore in a website name 
@@ -144,14 +72,14 @@ class User(db.Model):
    # trackers = db.relationship("Tracker", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, tracking, password="123qwerty", dob=date.today() ):
+    def __init__(self, name, uid, tracking, exercise, password="123qwerty", dob=date.today() ):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.tracking = tracking
         self.set_password(password)
         self._dob = dob
         self._tracking = tracking
-        
+        self._exercise = exercise
 
     # a name getter method, extracts name from object
     @property
@@ -211,6 +139,15 @@ class User(db.Model):
     def tracking(self, tracking):
         self._tracking = tracking
         
+        
+    @property
+    def exercise(self):
+        return self._exercise
+    
+    @exercise.setter
+    def exercise(self, exercise):
+        self._exercise = exercise
+        
     
     @property
     def age(self):
@@ -243,12 +180,13 @@ class User(db.Model):
             "uid": self.uid,
             "dob": self.dob,
             "age": self.age,
-            "tracking": self.tracking
+            "tracking": self.tracking,
+            "exercise": self.exercise
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password="", tracking=""):
+    def update(self, name="", uid="", password="", tracking="", exercise = ""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -258,6 +196,9 @@ class User(db.Model):
             self.set_password(password)
         if len(tracking) > 0:
             self.tracking = tracking #
+        if len(exercise) > 0:
+            self.exercise = exercise #
+        
         db.session.commit()
         return self
     
@@ -279,11 +220,11 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
-        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }') #testing create method
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise = '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' )
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise = '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise = '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise = '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }')
+        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise = '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }') #testing create method
         users = [u1, u2, u3, u4, u5]
 
         """Builds sample user/note(s) data"""

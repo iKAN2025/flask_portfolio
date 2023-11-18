@@ -1,6 +1,8 @@
 import json
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
+from flask_login import login_user, logout_user, current_user, login_required
+
 from datetime import datetime
 
 from model.users import User
@@ -30,8 +32,10 @@ class UserAPI:
             password = body.get('password')
             dob = body.get('dob')
             
+            
             tracking = body.get('tracking') #validate tracking
             #
+            exercise = body.get('exercise') #validate exercise
 
             ''' #1: Key code block, setup USER OBJECT '''
             uo = User(name=name, #user name
@@ -50,6 +54,9 @@ class UserAPI:
             if tracking is not None:
                 uo.tracking = tracking
             
+            if exercise is not None:
+                uo.exercise = exercise
+                
             ''' #2: Key Code block to add user to database '''
             # create user in database
             user = uo.create()
@@ -77,8 +84,12 @@ class UserAPI:
                     user.tracking = body['tracking']
                     user.update()  # Update user in the database
                     return user.read()
-                return {'message': 'You may only update tracking.'}, 400
+                if 'exercise' in body:
+                     user.exercise = body['exercise']
+                     user.update()
+                return {'message': 'You may only update tracking or exercise'}, 400
             return {'message': 'User not found.'}, 404
+        
         def get(self, user_id):
             user = User.query.filter_by(id=user_id).first()
             if user:
@@ -95,11 +106,35 @@ class UserAPI:
             #     #return jsonify(user.read())
             #     return user.read()
             # return {'message': 'You may only update tracking.'}, 400
-            
-   
-            
 
+    class _Create(Resource):
+        def post(self):
+            # Fetch data from the form
+            name = request.form.get('name')
+            uid = request.form.get('uid')
+            password = request.form.get('password')
+            dob = request.form.get('dob')
+
+            # Validate fields
+            if name is None or len(name) < 2:
+                return {'message': f'Name is missing, or is less than 2 characters'}, 400
+            
+            if uid is None or len(uid) < 2:
+                return {'message': f'User ID is missing, or is less than 2 characters'}, 400
+            
+            # Process the data further (creating User object, saving to DB, etc.)
+            # ... (your User creation logic)
+            new_user = User(name=name, uid=uid, password=password, dob=dob)
         
+        # Save the User object to the database
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                return {'message': 'User created successfully'}, 201
+            except Exception as e:
+                db.session.rollback()
+                return {'message': 'Error creating user', 'error': str(e)}, 500
+
         
     class _Security(Resource):
 
@@ -119,13 +154,37 @@ class UserAPI:
                 return {'message': f"Invalid user id or password"}, 400
             
             ''' authenticated user '''
+            login_user(user)
             return jsonify(user.read())
+        
+    class LoginAPI(Resource):
+        def post(self):
+            body = request.get_json()
+            username = body.get('username')
+            password = body.get('password')
 
+            user = User.query.filter_by(username=username).first()
 
+            if user and user.check_password(password):
+                login_user(user)
+                return {'message': 'Logged in successfully'}, 200
+
+            return {'message': 'Invalid username or password'}, 401
+
+    class LogoutAPI(Resource):
+        @login_required
+        def post(self):
+            logout_user()
+            return {'message': 'Logged out successfully'}, 200
             
+   
+
+                 
 
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
     api.add_resource(_UD, '/<int:user_id>')
     api.add_resource(_Security, '/authenticate')
-    
+    api.add_resource(LoginAPI, '/login')
+    api.add_resource(LogoutAPI, '/logout')
+    api.add_resource(_Create, '/create')

@@ -62,9 +62,9 @@ class User(db.Model):
     _name = db.Column(db.String(255), unique=False, nullable=False)
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
-    _dob = db.Column(db.Date)
-    _tracking = db.Column(db.JSON, nullable= True)
-    _exercise = db.Column(db.JSON, nullable= True)
+    _dob = db.Column(db.String)
+    _tracking = db.Column(db.JSON, nullable=True)
+    _exercise = db.Column(db.JSON, nullable=True)
 
 #If When I change the schema (aka add a field)….  I delete the .db file as it will generate when it does not exist.
 #Do not have a underscore in a website name 
@@ -72,7 +72,7 @@ class User(db.Model):
    # trackers = db.relationship("Tracker", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, tracking, exercise, password="123qwerty", dob=date.today() ):
+    def __init__(self, name, uid, tracking, exercise, dob, password="123qwerty"):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.tracking = tracking
@@ -123,8 +123,7 @@ class User(db.Model):
     # dob property is returned as string, to avoid unfriendly outcomes
     @property
     def dob(self):
-        dob_string = self._dob.strftime('%m-%d-%Y')
-        return dob_string
+        return self._dob
     
     # dob should be have verification for type date
     @dob.setter
@@ -152,7 +151,7 @@ class User(db.Model):
     @property
     def age(self):
         today = date.today()
-        return today.year - self._dob.year - ((today.month, today.day) < (self._dob.month, self._dob.day))
+        return 9
     
     # output content using str(object) in human readable form, uses getter
     # output content using json dumps, this is ready for API response
@@ -194,9 +193,9 @@ class User(db.Model):
             self.uid = uid
         if len(password) > 0:
             self.set_password(password)
-        if len(tracking) > 0:
+        if len(tracking) >= 0:
             self.tracking = tracking #
-        if len(exercise) > 0:
+        if len(exercise) >= 0:
             self.exercise = exercise #
         
         db.session.commit()

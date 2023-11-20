@@ -1,7 +1,9 @@
 import json
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,  make_response
 from flask_restful import Api, Resource # used for REST API building
 from flask_login import login_user, logout_user, current_user, login_required
+from werkzeug.security import check_password_hash
+
 
 from datetime import datetime
 
@@ -109,31 +111,31 @@ class UserAPI:
 
     class _Create(Resource):
         def post(self):
+            body = request.get_json()
             # Fetch data from the form
-            name = request.form.get('name')
-            uid = request.form.get('uid')
-            password = request.form.get('password')
-            dob = request.form.get('dob')
-
+            name = body.get('name')
+            uid = body.get('uid')
+            password = body.get('password')
+            dob = body.get('dob')
             # Validate fields
-            if name is None or len(name) < 2:
-                return {'message': f'Name is missing, or is less than 2 characters'}, 400
+            # if name is None or len(name) < 2:
+            #     return {'message': f'Name is missing, or is less than 2 characters'}, 400
             
-            if uid is None or len(uid) < 2:
-                return {'message': f'User ID is missing, or is less than 2 characters'}, 400
+            # if uid is None or len(uid) < 2:
+            #     return {'message': f'User ID is missing, or is less than 2 characters'}, 400
             
             # Process the data further (creating User object, saving to DB, etc.)
             # ... (your User creation logic)
-            new_user = User(name=name, uid=uid, password=password, dob=dob)
-        
-        # Save the User object to the database
-            try:
-                db.session.add(new_user)
-                db.session.commit()
-                return {'message': 'User created successfully'}, 201
-            except Exception as e:
-                db.session.rollback()
-                return {'message': 'Error creating user', 'error': str(e)}, 500
+            new_user = User(name=name, uid=uid, password=password, dob=dob, tracking='', exercise = '')
+            user = new_user.create()
+            # success returns json of user
+            if user:
+                #return jsonify(user.read())
+                return user.read()
+            # failure returns error
+            return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
+
+ 
 
         
     class _Security(Resource):
@@ -157,19 +159,64 @@ class UserAPI:
             login_user(user)
             return jsonify(user.read())
         
+    # class LoginAPI(Resource):
+    #     def post(self):
+    #         data = request.get_json()
+
+    #         # Retrieve uid and password from the request data
+    #         uid = data.get('uid')
+    #         password = data.get('password')
+
+    #         # Check if uid and password are provided
+    #         if not uid or not password:
+    #             response = {'message': 'Invalid credentials'}
+    #             return make_response(jsonify(response), 401)
+
+    #         # Retrieve user by uid from the database
+    #         user = User.query.filter_by(_uid=uid).first()
+
+    #         # Check if the user exists and the password is correct
+    #         if user and user.is_password(password):
+    #             # Perform login operations here (if needed)
+                
+    #             return make_response(jsonify(response), 200)
+
+    #         response = {'message': 'Invalid UID or password'}
+    #         return make_response(jsonify(response), 401)
     class LoginAPI(Resource):
         def post(self):
-            body = request.get_json()
-            username = body.get('username')
-            password = body.get('password')
+            data = request.get_json()
 
-            user = User.query.filter_by(username=username).first()
+            # Retrieve uid and password from the request data
+            uid = data.get('uid')
+            password = data.get('password')
 
-            if user and user.check_password(password):
-                login_user(user)
-                return {'message': 'Logged in successfully'}, 200
+            # Check if uid and password are provided
+            if not uid or not password:
+                response = {'message': 'Invalid credentials'}
+                return make_response(jsonify(response), 401)
 
-            return {'message': 'Invalid username or password'}, 401
+            # Retrieve user by uid from the database
+            user = User.query.filter_by(_uid=uid).first()
+
+            # Check if the user exists and the password is correct
+            if user and user.is_password(password):
+                # Perform login operations here (if needed)
+
+                # Construct the response with the user's name included
+                response = {
+                    'message': 'Logged in successfully',
+                    'user': {
+                        'name': user.name,  
+                        'id': user.id
+                    }
+                }
+                return make_response(jsonify(response), 200)
+
+            response = {'message': 'Invalid UID or password'}
+            return make_response(jsonify(response), 401)
+
+
 
     class LogoutAPI(Resource):
         @login_required

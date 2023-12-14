@@ -82,13 +82,12 @@ class UserAPI:
                 return {'message': 'Id not found.'}, 400
             user = User.query.filter_by(id=user_id).first()  # Use filter_by to query by UID
             if user:
-                if 'tracking' in body:
-                    user.tracking = body['tracking']
-                    user.update()  # Update user in the database
-                    return user.read()
-                if 'exercise' in body:
+                if 'exercise' and 'tracking' in body:
                      user.exercise = body['exercise']
                      user.update()
+                     user.tracking = body['tracking']
+                     user.update() 
+                     return user.read()
                 return {'message': 'You may only update tracking or exercise'}, 400
             return {'message': 'User not found.'}, 404
         
@@ -117,16 +116,14 @@ class UserAPI:
             uid = body.get('uid')
             password = body.get('password')
             dob = body.get('dob')
-            # Validate fields
-            # if name is None or len(name) < 2:
-            #     return {'message': f'Name is missing, or is less than 2 characters'}, 400
-            
-            # if uid is None or len(uid) < 2:
-            #     return {'message': f'User ID is missing, or is less than 2 characters'}, 400
-            
-            # Process the data further (creating User object, saving to DB, etc.)
-            # ... (your User creation logic)
-            new_user = User(name=name, uid=uid, password=password, dob=dob, tracking='', exercise = '')
+            exercise = body.get('exercise')
+            tracking = body.get('tracking')
+            if exercise is not None:
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='', )
+            elif tracking is not None:
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking)
+            else: 
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', tracking='', )
             user = new_user.create()
             # success returns json of user
             if user:

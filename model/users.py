@@ -65,6 +65,7 @@ class User(db.Model):
     _dob = db.Column(db.String)
     _exercise = db.Column(db.JSON, nullable=True)
     _tracking = db.Column(db.JSON, nullable=True)
+    _foodandwater = db.Column(db.JSON, nullable=True)
 
 #If When I change the schema (aka add a field)….  I delete the .db file as it will generate when it does not exist.
 #Do not have a underscore in a website name 

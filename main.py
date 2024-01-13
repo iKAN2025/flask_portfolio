@@ -52,6 +52,15 @@ def handle_preflight():
     response.headers.add('Access-Control-Allow-Methods', 'POST')
     return response, 200
 
+@app.route('/api/users/', methods=['POST'])
+def handle_more_preflight():
+    response = jsonify({'message': 'Preflight request received'})
+    response.headers.add('Access-Control-Allow-Origin', 'https://jplip.github.io')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers.add('Access-Control-Allow-Methods', 'POST')
+    return response, 200
+
+
 @app.before_first_request
 def activate_job():  # activate these items 
     initJokes()

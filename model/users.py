@@ -29,7 +29,7 @@ class User(db.Model):
    # trackers = db.relationship("Tracker", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, exercise, tracking, dob,foodandwater, coins,  password="123qwerty" ):
+    def __init__(self, name, uid, exercise, tracking, dob, foodandwater, coins,  password="123qwerty" ):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.tracking = tracking
@@ -123,6 +123,10 @@ class User(db.Model):
         
     @property
     def coins(self):
+        self._coins = coins
+     
+    @coins.setter  
+    def coins(self, coins):
         self._coins = coins
        
     @foodandwater.setter

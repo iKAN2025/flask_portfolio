@@ -20,7 +20,6 @@ class User(db.Model):
     _dob = db.Column(db.String)
     _exercise = db.Column(db.JSON, nullable=True)
     _tracking = db.Column(db.JSON, nullable=True)
-    _foodandwater = db.Column(db.JSON, nullable=True)
     _coins = db.Column(db.Integer, nullable=True)
 
 #If When I change the schema (aka add a field)….  I delete the .db file as it will generate when it does not exist.
@@ -29,7 +28,7 @@ class User(db.Model):
    # trackers = db.relationship("Tracker", cascade='all, delete', backref='users', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, exercise, tracking, dob, foodandwater, coins,  password="123qwerty" ):
+    def __init__(self, name, uid, exercise, tracking, dob,  coins,  password="123qwerty" ):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.tracking = tracking
@@ -37,7 +36,6 @@ class User(db.Model):
         self._dob = dob
         self._exercise = exercise
         self._tracking = tracking
-        self.foodandwater = foodandwater
         self.coins = coins
 
 
@@ -112,14 +110,6 @@ class User(db.Model):
     def age(self):
         today = date.today()
         return 9
-    
-    @property
-    def foodandwater(self):
-        return self._exercise
-    
-    @foodandwater.setter
-    def foodandwater(self, foodandwater):
-        self._foodandwater = foodandwater
         
     @property
     def coins(self):
@@ -129,9 +119,7 @@ class User(db.Model):
     def coins(self, coins):
         self._coins = coins
        
-    @foodandwater.setter
-    def foodandwater(self, coins):
-        self._foodandwater = coins
+
         
     
     # output content using str(object) in human readable form, uses getter
@@ -162,13 +150,12 @@ class User(db.Model):
             "age": self.age,
             "exercise": self.exercise,
             "tracking": self.tracking,
-            "foodandwater": self.foodandwater,
             "coins": self.coins
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password="",  exercise = "", tracking="", foodandwater = "", coins=""):
+    def update(self, name="", uid="", password="",  exercise = "", tracking="", coins=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -180,8 +167,6 @@ class User(db.Model):
             self.exercise = exercise
         if len(tracking) > 0:
             self.tracking = tracking 
-        if len(foodandwater) > 0:
-            self.foodandwater = foodandwater
         if len(coins) > 0:
             self.coins = coins    
         db.session.commit()
@@ -206,11 +191,11 @@ def initUsers():
         db.create_all()
 
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', foodandwater='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins = 0)
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', foodandwater='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' , coins = 0)
-        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', foodandwater='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' , coins = 0)
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', foodandwater='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' , coins = 0)
-        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', foodandwater='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }' , coins = 0)
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins = 0)
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins = 0)
+        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins = 0)
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins = 0)
+        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins = 0)
 
         # Add users to the database session
         db.session.add_all([u1, u2, u3, u4, u5])

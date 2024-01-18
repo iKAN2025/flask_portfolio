@@ -109,7 +109,7 @@ class User(db.Model):
     @property
     def age(self):
         today = date.today()
-        return 9
+        return today
         
     @property
     def coins(self):

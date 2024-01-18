@@ -109,11 +109,11 @@ class User(db.Model):
     @property
     def age(self):
         today = date.today()
-        return today
+        return 9
         
     @property
     def coins(self):
-        self._coins = coins
+       return self._coins
      
     @coins.setter  
     def coins(self, coins):
@@ -155,7 +155,7 @@ class User(db.Model):
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password="",  exercise = "", tracking="", coins=""):
+    def update(self, name="", uid="", password="",  exercise = "", tracking="", coins=0):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -255,6 +255,7 @@ def initUsers():
 
         # Commit the changes to the database
         db.session.commit()
+
 
 
 

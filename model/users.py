@@ -155,7 +155,7 @@ class User(db.Model):
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password="",  exercise = "", tracking="", coins=0):
+    def update(self, name="", uid="", password="",  exercise = "", tracking="", coins=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -245,12 +245,12 @@ def initUsers():
                 new_user = User(
                     name=user_data['name'],
                     uid=user_data['uid'],
-                    password=user_data['password'],
                     dob=user_data['dob'],
                     tracking=user_data['tracking'],
                     exercise=user_data['exercise'],
                     coins=user_data['coins']
                 )
+                new_user.set_password(user_data['password'])  # Set the password separately
                 db.session.add(new_user)
 
         # Commit the changes to the database

@@ -31,12 +31,12 @@ class User(db.Model):
     def __init__(self, name, uid, exercise, tracking, dob,  coins,  password="123qwerty" ):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
-        self.tracking = tracking
+        self._tracking = tracking
         self.set_password(password)
         self._dob = dob
         self._exercise = exercise
         self._tracking = tracking
-        self.coins = coins
+        self._coins = coins
 
 
     # a name getter method, extracts name from object

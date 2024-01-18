@@ -184,77 +184,77 @@ class User(db.Model):
 """Database Creation and Testing """
 
 
-# Builds working data for testing
-# def initUsers():
-#     with app.app_context():
-#         """Create database and tables"""
-#         db.create_all()
-
-#         """Tester data for table"""
-#         u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
-#         u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
-#         u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
-#         u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
-#         u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
-
-#         # Add users to the database session
-#         db.session.add_all([u1, u2, u3, u4, u5])
-
-#         # Commit the changes to the database
-        
-#         db.session.commit()
-
+Builds working data for testing
 def initUsers():
     with app.app_context():
         """Create database and tables"""
         db.create_all()
 
         """Tester data for table"""
-        users_data = [
-            {'name': 'Thomas Edison', 'uid': 'toby', 'password': '123toby', 'dob': date(1847, 2, 11),
-             'tracking': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'coins': 0},
-            {'name': 'Nicholas Tesla', 'uid': 'niko', 'password': '123niko', 'dob': date(1856, 7, 10),
-             'tracking': '{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'coins': 0},
-            {'name': 'Alexander Graham Bell', 'uid': 'lex', 'dob': date(1856, 7, 10),
-             'tracking': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'coins': 0},
-            {'name': 'Grace Hopper', 'uid': 'hop', 'password': '123hop', 'dob': date(1906, 12, 9),
-             'tracking': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'coins': 0},
-            {'name': 'Eun Lim', 'uid': 'lim', 'password': '123lim', 'dob': date(2007, 12, 9),
-             'tracking': '{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
-             'coins': 0}
-        ]
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), tracking='{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
+        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1856, 7, 10), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), tracking='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
+        u5 = User(name='Eun Lim', uid='lim', password='123lim', dob=date(2007, 12, 9), tracking='{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', exercise='{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }', coins= 0)
 
-        # Add users to the database session with duplicate _uid handling
-        for user_data in users_data:
-            existing_user = User.query.filter_by(_uid=user_data['uid']).first()
-
-            if existing_user:
-                # Handle the case where the user already exists (update or return an error)
-                print(f"User with _uid '{user_data['uid']}' already exists.")
-            else:
-                # Proceed with inserting the new user
-                new_user = User(
-                    name=user_data['name'],
-                    uid=user_data['uid'],
-                    dob=user_data['dob'],
-                    tracking=user_data['tracking'],
-                    exercise=user_data['exercise'],
-                    coins=user_data['coins']
-                )
-                new_user.set_password(user_data['password'])  # Set the password separately
-                db.session.add(new_user)
+        # Add users to the database session
+        db.session.add_all([u1, u2, u3, u4, u5])
 
         # Commit the changes to the database
+        
         db.session.commit()
+
+# def initUsers():
+#     with app.app_context():
+#         """Create database and tables"""
+#         db.create_all()
+
+#         """Tester data for table"""
+#         users_data = [
+#             {'name': 'Thomas Edison', 'uid': 'toby', 'password': '123toby', 'dob': date(1847, 2, 11),
+#              'tracking': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'coins': 0},
+#             {'name': 'Nicholas Tesla', 'uid': 'niko', 'password': '123niko', 'dob': date(1856, 7, 10),
+#              'tracking': '{"userName":"Nicholas Tesla","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'coins': 0},
+#             {'name': 'Alexander Graham Bell', 'uid': 'lex', 'dob': date(1856, 7, 10),
+#              'tracking': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'coins': 0},
+#             {'name': 'Grace Hopper', 'uid': 'hop', 'password': '123hop', 'dob': date(1906, 12, 9),
+#              'tracking': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'coins': 0},
+#             {'name': 'Eun Lim', 'uid': 'lim', 'password': '123lim', 'dob': date(2007, 12, 9),
+#              'tracking': '{"userName":"Eun Lim","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'exercise': '{"userName":"Thomas Edison","instrumentName": "Piano", "practiceDate": "21-Oct-2023", "practiceTime": "30" }',
+#              'coins': 0}
+#         ]
+
+#         # Add users to the database session with duplicate _uid handling
+#         for user_data in users_data:
+#             existing_user = User.query.filter_by(_uid=user_data['uid']).first()
+
+#             if existing_user:
+#                 # Handle the case where the user already exists (update or return an error)
+#                 print(f"User with _uid '{user_data['uid']}' already exists.")
+#             else:
+#                 # Proceed with inserting the new user
+#                 new_user = User(
+#                     name=user_data['name'],
+#                     uid=user_data['uid'],
+#                     dob=user_data['dob'],
+#                     tracking=user_data['tracking'],
+#                     exercise=user_data['exercise'],
+#                     coins=user_data['coins']
+#                 )
+#                 new_user.set_password(user_data['password'])  # Set the password separately
+#                 db.session.add(new_user)
+
+#         # Commit the changes to the database
+#         db.session.commit()
 
 
 

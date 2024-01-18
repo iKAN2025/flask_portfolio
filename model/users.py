@@ -259,7 +259,6 @@ def initUsers():
 
 
 
-
 # def initUsers():
 #     with app.app_context():
 #         """Create database and tables"""

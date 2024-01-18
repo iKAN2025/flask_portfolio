@@ -119,11 +119,11 @@ class UserAPI:
             exercise = body.get('exercise')
             tracking = body.get('tracking')
             if exercise is not None:
-                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='')
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='', coins = 0)
             elif tracking is not None:
-                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking )
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking, coins =0)
             else: 
-                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', tracking='', )
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', tracking='', coins=0)
             user = new_user.create()
             # success returns json of user
             if user:

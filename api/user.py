@@ -33,6 +33,7 @@ class UserAPI:
             # look for password and dob
             password = body.get('password')
             dob = body.get('dob')
+            coins = 0
             
             
             tracking = body.get('tracking') #validate tracking
@@ -41,7 +42,7 @@ class UserAPI:
 
             ''' #1: Key code block, setup USER OBJECT '''
             uo = User(name=name, #user name
-                      uid=uid, tracking=tracking)
+                      uid=uid, tracking=tracking, exercise=exercise, dob=dob, coins=coins)
             
             ''' Additional garbage error checking '''
             # set password if provided
@@ -89,8 +90,7 @@ class UserAPI:
                      user.update() 
                      return user.read()
                 return {'message': 'You may only update tracking or exercise'}, 400
-            return {'message': 'User not found.'}, 404
-        
+            return {'message': 'User not found.'}, 404    
         def get(self, user_id):
             user = User.query.filter_by(id=user_id).first()
             if user:
@@ -118,12 +118,13 @@ class UserAPI:
             dob = body.get('dob')
             exercise = body.get('exercise')
             tracking = body.get('tracking')
+            coins = 0
             if exercise is not None:
-                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='', coins = 0)
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='', coins = coins)
             elif tracking is not None:
-                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking, coins =0)
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking, coins = coins)
             else: 
-                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', tracking='', coins=0)
+                new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', tracking='', coins = coins )
             user = new_user.create()
             # success returns json of user
             if user:
@@ -131,8 +132,6 @@ class UserAPI:
                 return user.read()
             # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
-
- 
 
         
     class _Security(Resource):
@@ -198,7 +197,7 @@ class UserAPI:
 
             # Check if the user exists and the password is correct
             if user and user.is_password(password):
-                # Perform login operations here (if needed)
+         
 
                 # Construct the response with the user's name included
                 response = {
@@ -232,3 +231,7 @@ class UserAPI:
     api.add_resource(LoginAPI, '/login')
     api.add_resource(LogoutAPI, '/logout')
     api.add_resource(_Create, '/create')
+    
+    
+    
+    

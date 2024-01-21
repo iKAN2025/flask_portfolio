@@ -70,7 +70,8 @@ class User(db.Model):
     # update password, this is conventional setter
     def set_password(self, password):
         """Create a hashed password."""
-        self._password = generate_password_hash(password, method='sha256')
+        if password is not None:
+            self._password = generate_password_hash(password, method='sha256')
 
     # check password parameter versus stored/encrypted password
     def is_password(self, password):
